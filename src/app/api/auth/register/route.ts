@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
         if (!email || !password) {
             return NextResponse.json(
-                { error: "Email and password required" },
+                { success: false, message: "Email and password required" },
                 { status: 400 }
             );
         }
@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
         const existing = await User.findOne({ email });
         if (existing) {
             return NextResponse.json(
-                { error: "User already exists" },
+                { success: false, message: "User already exists" },
                 { status: 400 }
             );
         }
@@ -40,7 +40,8 @@ export async function POST(req: NextRequest) {
 
     } catch (err: unknown) {
         return NextResponse.json({
-            error:
+            success: false,
+            message:
                 err instanceof Error ? err.message : "Internal Server Error"
         }, { status: 500 });
     }

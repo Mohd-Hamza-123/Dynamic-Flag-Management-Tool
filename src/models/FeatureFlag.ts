@@ -29,5 +29,5 @@ const FeatureFlagSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-const FeatureFlag = mongoose.model("FeatureFlag", FeatureFlagSchema);
+const FeatureFlag = mongoose.models.FeatureFlag ||  mongoose.model("FeatureFlag", FeatureFlagSchema);
 export default FeatureFlag

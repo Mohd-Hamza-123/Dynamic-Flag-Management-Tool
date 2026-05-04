@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
         const user = await User.findOne({ email });
         if (!user) {
             return NextResponse.json(
-                { error: "Invalid credentials" },
+                { success: false, message: "Invalid credentials" },
                 { status: 400 }
             );
         }
@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return NextResponse.json(
-                { error: "Invalid credentials" },
+                { success: false, message: "Invalid credentials" },
                 { status: 400 }
             );
         }
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
         );
 
         const response = NextResponse.json({
+            success : true,
             message: "Login successful",
         }, { status: 200 });
 
@@ -48,6 +49,6 @@ export async function POST(req: NextRequest) {
 
     } catch (err) {
         const message = err instanceof Error ? err.message : "Internal Server Error";
-        return NextResponse.json({ error: message }, { status: 500 });
+        return NextResponse.json({ success: false, message }, { status: 500 });
     }
 }

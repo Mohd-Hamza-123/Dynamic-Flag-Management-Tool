@@ -18,5 +18,5 @@ const TargetingRuleSchema = new mongoose.Schema({
   serve: mongoose.Schema.Types.Mixed // what variation to serve
 });
 
-const TargetingRule = mongoose.model("TargetingRule", TargetingRuleSchema);
+const TargetingRule = mongoose.models.TargetingRule || mongoose.model("TargetingRule", TargetingRuleSchema);
 export default TargetingRule

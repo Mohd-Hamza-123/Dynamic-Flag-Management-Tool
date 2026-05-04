@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
 import User from "@/models/user";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
+import verifyToken from "@/lib/api/verifyToken";
 
 export async function GET() {
     try {
@@ -10,15 +10,14 @@ export async function GET() {
 
         if (!token) {
             return NextResponse.json(
-                { message: "Not authenticated", success: false },
+                { message: "Token not found", success: false },
                 { status: 401 }
             );
         }
 
         // Verify JWT
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string; };
-        // console.log(decoded)
-        const user = await User.findById(decoded.userId).select("-password"); // Exclude password field
+        const userId = await verifyToken(token)
+        const user = await User.findById(userId).select("-password"); // Exclude password field
 
         if (!user) {
             return NextResponse.json(
@@ -30,8 +29,9 @@ export async function GET() {
         return NextResponse.json({ user, success: true }, { status: 200 });
 
     } catch (error) {
+        const message = error instanceof Error ? error.message : "Internal Server Error";
         return NextResponse.json(
-            { message: "Invalid or expired token", success: false },
+            { message, success: false },
             { status: 401 }
         );
     }

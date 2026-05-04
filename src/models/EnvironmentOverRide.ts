@@ -20,7 +20,7 @@ const EnvironmentOverrideSchema = new mongoose.Schema({
     }
 });
 
-const EnvironmentOverride = mongoose.model(
+const EnvironmentOverride = mongoose.models.EnvironmentOverride ||   mongoose.model(
     "EnvironmentOverride",
     EnvironmentOverrideSchema
 );
