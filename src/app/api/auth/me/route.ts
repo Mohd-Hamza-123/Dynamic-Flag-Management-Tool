@@ -1,7 +1,7 @@
 import User from "@/models/user";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import verifyToken from "@/lib/api/verifyToken";
+import verifyToken from "@/lib/verifyToken";
 
 export async function GET() {
     try {

@@ -1,4 +1,4 @@
-import verifyToken from "./lib/api/verifyToken";
+import verifyToken from "./lib/verifyToken";
 import { NextRequest, NextResponse } from "next/server";
 
 async function proxy(request: NextRequest) {
@@ -14,9 +14,9 @@ async function proxy(request: NextRequest) {
         }
 
         const userId = await verifyToken(token)
+        // console.log("proxy : " + userId)
         const headers = new Headers(request.headers)
         headers.set("x-user-id", userId)
-
         return NextResponse.next({ request: { headers } })
 
     } catch (error: unknown) {
@@ -31,7 +31,7 @@ async function proxy(request: NextRequest) {
 
 export const config = {
     matcher: [
-        "/api/workspace/:path*",
+        "/api/workspaces/:path*",
         "/api/auth/me"
     ],
 }

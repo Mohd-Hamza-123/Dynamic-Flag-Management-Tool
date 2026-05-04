@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import { connectDB } from "@/config/db";
+import mongoose from "mongoose";
 import Workspace from "@/models/workspace";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -53,5 +54,45 @@ export async function POST(req: NextRequest) {
             },
             { status: 500 }
         );
+    }
+}
+
+export async function GET(req: NextRequest) {
+    try {
+
+        const userId = req.headers.get("x-user-id");
+
+        if (!userId) {
+            return NextResponse.json({
+                success: false,
+                message: "Unauthorized"
+            }, {
+                status: 401
+            })
+        }
+
+        const workspaces = await Workspace.find({
+            ownerId: new mongoose.Types.ObjectId(userId)
+        });
+
+        if (workspaces.length === 0) {
+            return NextResponse.json({
+                success: true,
+                message: "No workspaces found",
+                workspaces: []
+            });
+        }
+        return NextResponse.json({
+            success: true,
+            workspaces
+        })
+    } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : "Internal Server Error";
+        return NextResponse.json({
+            success: false,
+            error: message,
+        }, {
+            status: 500
+        })
     }
 }
