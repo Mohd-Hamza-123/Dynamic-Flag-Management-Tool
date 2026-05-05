@@ -17,13 +17,16 @@ const FeatureFlagSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["boolean", "percentage", "variant"],
+    enum: ["boolean", "percentage"],
     default: "boolean"
   },
   enabled: { type: Boolean, default: false },
   variations: [
     {
-      value: mongoose.Schema.Types.Mixed, // true/false or string
+      value: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true,
+      }, // true/false or string
       weight: Number // for percentage rollout
     }
   ],

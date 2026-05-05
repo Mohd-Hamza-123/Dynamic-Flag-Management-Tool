@@ -4,6 +4,7 @@ import Workspace from "@/models/workspace";
 import FeatureFlag from "@/models/FeatureFlag";
 import { NextResponse, NextRequest } from "next/server";
 import { generateFeatureKey } from "@/lib/generateFeatureKey";
+import { validateVariations } from "@/lib/validateVariations";
 
 export async function POST(req: NextRequest,
     { params }: { params: Promise<{ workspaceId: string }> }
@@ -71,15 +72,7 @@ export async function POST(req: NextRequest,
         }
 
 
-        if (
-            (type === "percentage" || type === "variant") &&
-            (!variations || variations.length === 0)
-        ) {
-            return NextResponse.json({
-                success: false,
-                message: "Variations required for this type"
-            }, { status: 400 });
-        }
+        const valid = validateVariations(type, variations)
 
         const key = generateFeatureKey(name)
         const newFlag = await FeatureFlag.create({
