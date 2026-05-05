@@ -1,7 +1,8 @@
+import mongoose from "mongoose"
 import { connectDB } from "@/config/db";
 import Workspace from "@/models/workspace";
+import FeatureFlag from "@/models/FeatureFlag";
 import { NextRequest, NextResponse } from "next/server";
-import mongoose from "mongoose"
 
 export async function DELETE(
     req: NextRequest,
@@ -21,10 +22,10 @@ export async function DELETE(
             );
         }
 
-        // Only allow owner to delete
-        const workspace = await Workspace.findOneAndDelete({
+        //  Check ownership 
+        const workspace = await Workspace.findOne({
             _id: workspaceId,
-            ownerId: userId
+            ownerId: userId,
         });
 
         if (!workspace) {
@@ -33,6 +34,12 @@ export async function DELETE(
                 { status: 404 }
             );
         }
+
+        //  Delete related FeatureFlags
+        await FeatureFlag.deleteMany({ workspaceId });
+
+        // Delete workspace
+        await Workspace.findByIdAndDelete(workspaceId);
 
         return NextResponse.json(
             { success: true, message: "Workspace deleted successfully" },

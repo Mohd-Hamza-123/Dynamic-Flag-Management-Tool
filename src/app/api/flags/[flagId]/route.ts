@@ -101,7 +101,6 @@ export async function GET(req: NextRequest,
     }
 }
 
-
 export async function PATCH(
     req: NextRequest,
     { params }: { params: Promise<{ flagId: string }> }
