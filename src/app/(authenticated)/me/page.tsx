@@ -3,14 +3,14 @@
 import OptionalChildren from "@/components/ui/OptionalChildren";
 import { FullPageSpinner } from "@/components/ui/Spinner";
 import { useMutation, useQuery } from "@/lib/hooks";
-import { ServerResponseType } from "@/types/frontend";
+import { ServerResponseType, User } from "@/types/frontend";
 import { CircleUserRoundIcon, SquareArrowRightExit } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const UserPage = () => {
 
-    const { loading, data, error } = useQuery<ServerResponseType<{ name: string, email: string }> | undefined>("/api/auth/me");
+    const { loading, data, error } = useQuery<ServerResponseType<{ user: User }> | undefined>("/api/auth/me");
     const mutation = useMutation();
     const router = useRouter();
 
@@ -47,10 +47,11 @@ const UserPage = () => {
                         <CircleUserRoundIcon className="size-12" />
                     </div>
                     <div>
-                        <h4 className="text-2xl">{data.name}</h4>
-                        <p className="text-sm">{data.email}</p>
+                        <h4 className="text-2xl">{data.user.name}</h4>
+                        <p className="text-sm">Joined at: {new Date(data.user.createdAt).toLocaleString()}</p>
                     </div>
                 </div>
+                <p className="text-sm my-4">{data.user.email}</p>
                 <button
                     onClick={handleLogout}
                     className="h-10 px-4 py-2 w-fit gap-2 flex flex-cntr-all rounded-md primary mt-4"

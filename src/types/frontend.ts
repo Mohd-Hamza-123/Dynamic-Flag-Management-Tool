@@ -23,6 +23,13 @@ export type Flag = {
     createdAt: Date
 }
 
+export type User = {
+    _id: string,
+    name: string,
+    email: string,
+    createdAt: Date
+}
+
 export type ServerResponseType<T> = {
     success: boolean,
     message: string,
