@@ -25,13 +25,17 @@ export const useMutation = () => {
         setLoading(true);
 
         try {
+            console.log(data)
             const response = await fetch(path, {
                 body: data ? JSON.stringify(data) : data,
                 method: mode,
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
+
+            console.log(response.ok)
 
             const result = await response.json();
             return { success: true, result };

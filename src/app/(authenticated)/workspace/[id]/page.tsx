@@ -18,6 +18,8 @@ const WorkspacePage = () => {
     const { loading, error, data } = useQuery<ServerResponseType<{ workspace: Workspace }>>(`/api/workspaces/${id}`);
     const mutation = useMutation();
 
+    
+
     useEffect(() => {
         mutation.error && alert(error);
     }, [mutation.error]);

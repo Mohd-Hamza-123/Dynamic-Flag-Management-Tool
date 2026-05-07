@@ -1,19 +1,19 @@
 "use client";
 
-import OptionalChildren from "@/components/ui/OptionalChildren";
-import { FullPageSpinner } from "@/components/ui/Spinner";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@/lib/hooks";
 import { ServerResponseType } from "@/types/frontend";
+import { FullPageSpinner } from "@/components/ui/Spinner";
+import OptionalChildren from "@/components/ui/OptionalChildren";
 import { CircleUserRoundIcon, SquareArrowRightExit } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
 
 const UserPage = () => {
 
     const { loading, data, error } = useQuery<ServerResponseType<{ name: string, email: string }> | undefined>("/api/auth/me");
     const mutation = useMutation();
     const router = useRouter();
-
+    console.log(data)
     useEffect(() => {
         mutation.error && alert(error);
     }, [mutation.error]);
@@ -42,7 +42,7 @@ const UserPage = () => {
                 <FullPageSpinner />
             </OptionalChildren>
             <header className="space-y-4 border-b border-gray-500/40 py-2">
-                <div className="flex items-center gap-4">
+                <div className=" items-center gap-4">
                     <div className="size-20 flex flex-cntr-all rounded-full bg-gray-500/40">
                         <CircleUserRoundIcon className="size-12" />
                     </div>
@@ -50,6 +50,7 @@ const UserPage = () => {
                         <h4 className="text-2xl">{data.name}</h4>
                         <p className="text-sm">{data.email}</p>
                     </div>
+             
                 </div>
                 <button
                     onClick={handleLogout}

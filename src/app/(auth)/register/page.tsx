@@ -41,7 +41,8 @@ export default function RegisterPage() {
         data: form
       });
 
-      if (!response.success || !response.result || response.result.success) {
+      if (!response.success || !response.result || !response.result.success) {
+      
         if (response.result?.message) {
           alert(response.result.message);
           return;

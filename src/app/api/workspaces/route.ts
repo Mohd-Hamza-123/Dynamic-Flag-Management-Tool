@@ -13,9 +13,10 @@ export async function POST(req: NextRequest) {
     try {
         await connectDB();
         const body = await req.json();
+        
         const { name, description } = body;
         const userId = req.headers.get("x-user-id")
-        // console.log(userId)
+        console.log(userId,name)
         // basic validation
         if (!name) {
             return NextResponse.json(
@@ -24,6 +25,7 @@ export async function POST(req: NextRequest) {
             );
         }
 
+      
         // generate simple API keys for environments
         const environments = ["dev", "staging", "prod"].map((env) => ({
             name: env,
@@ -47,6 +49,8 @@ export async function POST(req: NextRequest) {
         );
 
     } catch (error: unknown) {
+        
+        console.log(error instanceof Error ? error.message : error)
         return NextResponse.json(
             {
                 success: false,
@@ -59,7 +63,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
     try {
-
+        await connectDB()
         const userId = req.headers.get("x-user-id");
 
         if (!userId) {
@@ -70,10 +74,13 @@ export async function GET(req: NextRequest) {
                 status: 401
             })
         }
+      
 
         const workspaces = await Workspace.find({
-            ownerId: new mongoose.Types.ObjectId(userId)
+            ownerId: userId
         });
+
+   
 
         if (workspaces.length === 0) {
             return NextResponse.json({
@@ -88,6 +95,7 @@ export async function GET(req: NextRequest) {
         })
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "Internal Server Error";
+        console.log(message)
         return NextResponse.json({
             success: false,
             error: message,

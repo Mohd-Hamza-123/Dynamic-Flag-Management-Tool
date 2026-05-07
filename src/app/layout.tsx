@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${montserratFont.variable} ${robotoFont.variable} h-full dark antialiased`}
+      className={`${montserratFont.variable} ${robotoFont.variable} h-full  antialiased`}
     >
       <body>{children}</body>
     </html>

@@ -1,3 +1,5 @@
+"use client"
+
 import { Input } from "@/components/ui/input";
 import { ChevronLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";

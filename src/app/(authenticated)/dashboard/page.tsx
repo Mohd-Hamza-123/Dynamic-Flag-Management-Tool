@@ -12,6 +12,8 @@ import Link from "next/link";
 const Dashboard = () => {
   const { loading, data, queryFn } = useQuery<WorkspaceListResponse | undefined>("/api/workspaces");
 
+  console.log(data)
+
   return (
     <main className="max-w-3xl mx-auto space-y-6 pb-6 pt-4">
 

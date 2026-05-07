@@ -5,7 +5,7 @@ async function proxy(request: NextRequest) {
 
     try {
         const token = request.cookies.get("session-token")?.value;
-        // console.log(token)
+       
         if (!token) {
             return NextResponse.json({
                 error: 'Unauthorized',
@@ -14,7 +14,7 @@ async function proxy(request: NextRequest) {
         }
 
         const userId = await verifyToken(token);
-        // console.log("proxy : " + userId)
+       
         const headers = new Headers(request.headers)
         headers.set("x-user-id", userId)
         return NextResponse.next({ request: { headers } })
