@@ -45,7 +45,7 @@ export async function POST(req: NextRequest,
             else if (flag.type === "percentage") {
 
                 const hash = hashUserId(userId + flag.key) // to ensure different distribution for different flags
-                const slot = hash % 100
+                const slot = hash % 100;
                 // console.log("bucket", bucket)
                 let selected = flag.variations[0]?.value
                 let cumulative = 0

@@ -13,7 +13,7 @@ async function proxy(request: NextRequest) {
             }, { status: 401 })
         }
 
-        const userId = await verifyToken(token)
+        const userId = await verifyToken(token);
         // console.log("proxy : " + userId)
         const headers = new Headers(request.headers)
         headers.set("x-user-id", userId)

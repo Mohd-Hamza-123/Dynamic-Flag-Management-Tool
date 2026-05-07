@@ -49,7 +49,7 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  --background: ghostwhite;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -122,9 +122,55 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
   }
-  html {
-    @apply font-sans;
-  }
+}
+
+body {
+  font-family: var(--font-roboto);
+  height: fit-content;
+  background: linear-gradient(
+    to right bottom,
+    var(--background),
+    var(--background),
+    rgba(173, 216, 230, 0.5),
+    rgba(255, 192, 203, 0.5)
+  ) fixed;
+}
+
+.dark body {
+  background: linear-gradient(to right bottom, var(--background), #000023) fixed;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-montserrat);
+}
+
+.flex-cntr-all {
+  align-items: center;
+  justify-content: center;
+}
+
+.patternBackground {
+  position: absolute;
+  inset: 0;
+  background-image: url("https://parlocula.vercel.app/pattern.svg");
+  background-size: cover;
+  background-attachment: fixed;
+  opacity: 0.8;
+  z-index: 0;
+}
+
+html.light .patternBackground {
+  opacity: 0.2;
+}
+
+:is(button, a).primary {
+  background-color: var(--foreground);
+  color: var(--background);
 }

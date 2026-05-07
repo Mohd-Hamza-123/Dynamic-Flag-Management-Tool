@@ -6,8 +6,6 @@ import { NextResponse, NextRequest } from "next/server";
 export async function POST(req: NextRequest) {
     try {
 
-        await connectDB();
-
         const { name, email, password } = await req.json();
 
         if (!email || !password) {
@@ -16,6 +14,8 @@ export async function POST(req: NextRequest) {
                 { status: 400 }
             );
         }
+
+        await connectDB();
 
         const existing = await User.findOne({ email });
         if (existing) {
@@ -27,14 +27,14 @@ export async function POST(req: NextRequest) {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({
+        await User.create({
             name,
             email,
             password: hashedPassword
         });
 
         return NextResponse.json(
-            { message: "User registered successfully" },
+            { success: true, message: "User registered successfully" },
             { status: 201 }
         );
 
