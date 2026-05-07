@@ -1,84 +1,115 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
+import { validateForm } from "../utils";
+import { useMutation } from "@/lib/hooks";
+import OptionalChildren from "@/components/ui/OptionalChildren";
+import { FullPageSpinner } from "@/components/ui/Spinner";
 
 export default function RegisterPage() {
+
   const router = useRouter();
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+  const { error, loading, mutate } = useMutation();
 
-  const handleRegister = async () => {
-    // later connect API
-    console.log(form);
+  // Alert when there is an error
+  useEffect(() => {
+    error && alert(error)
+  }, [error]);
 
-    alert("Registered successfully (demo)");
-    router.push("/login");
+  const handleRegister = async (formData: FormData) => {
+
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+
+    const form = { name, email, password }
+
+    const validated = validateForm(form, true);
+
+    if (!validated.success) {
+      alert(validated.message);
+    } else {
+      const response = await mutate<{ success: boolean, message: string }>({
+        path: "/api/auth/register",
+        data: form
+      });
+
+      if (!response.success || !response.result || response.result.success) {
+        if (response.result?.message) {
+          alert(response.result.message);
+          return;
+        }
+      } else {
+        alert("Registered successfully");
+        router.push("/login");
+      }
+    }
+
   };
 
   return (
-    <div className="flex justify-center items-center h-[90vh]">
-      <Card className="w-[400px] shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-center">Register</CardTitle>
-        </CardHeader>
+    <>
+      <OptionalChildren condition={loading}>
+        <FullPageSpinner />
+      </OptionalChildren>
+      <div className="flex flex-col flex-cntr-all m-auto h-full">
+        <Card className="bg-transparent w-96 border-0 ring-0">
+          <CardHeader>
+            <CardTitle className="text-center text-lg">Register</CardTitle>
+          </CardHeader>
 
-        <CardContent className="space-y-4">
-          <div>
-            <Label>Name</Label>
-            <Input
-              placeholder="Enter your name"
-              onChange={(e) =>
-                setForm({ ...form, name: e.target.value })
-              }
-            />
-          </div>
+          <CardContent>
+            <form className="space-y-4 w-full" action={handleRegister}>
+              <div className="space-y-2">
+                <Label>Name</Label>
+                <Input
+                  placeholder="Enter your name"
+                  name="name"
+                />
+              </div>
 
-          <div>
-            <Label>Email</Label>
-            <Input
-              type="email"
-              placeholder="Enter your email"
-              onChange={(e) =>
-                setForm({ ...form, email: e.target.value })
-              }
-            />
-          </div>
+              <div className="space-y-2">
+                <Label>Email</Label>
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  name="email"
+                />
+              </div>
 
-          <div>
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="Enter password"
-              onChange={(e) =>
-                setForm({ ...form, password: e.target.value })
-              }
-            />
-          </div>
+              <div className="space-y-2">
+                <Label>Password</Label>
+                <Input
+                  type="password"
+                  placeholder="Enter password"
+                  name="password"
+                />
+              </div>
 
-          <Button className="w-full" onClick={handleRegister}>
-            Register
-          </Button>
+              <Button type="submit" className="w-full">
+                Register
+              </Button>
+            </form>
 
-          <p className="text-sm text-center">
-            Already have an account?{" "}
-            <span
-              onClick={() => router.push("/login")}
-              className="text-blue-600 cursor-pointer"
-            >
-              Login
-            </span>
-          </p>
-        </CardContent>
-      </Card>
-    </div>
+            <p className="text-sm text-center mt-4">
+              Already have an account?{" "}
+              <Link
+                href="/login"
+                className="text-blue-600 cursor-pointer"
+              >
+                Login
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }

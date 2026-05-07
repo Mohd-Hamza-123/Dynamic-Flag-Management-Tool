@@ -11,8 +11,8 @@ export async function DELETE(
     try {
 
         await connectDB();
-        const { workspaceId } = await params
-        // console.log(workspaceId)
+        const { workspaceId } = await params;
+        
         const userId = req.headers.get("x-user-id");
 
         if (!userId) {
@@ -61,7 +61,6 @@ export async function DELETE(
 }
 
 
-
 export async function GET(
     req: NextRequest,
     { params }: { params: Promise<{ workspaceId: string }> }
@@ -82,12 +81,12 @@ export async function GET(
 
         const { workspaceId } = await params
 
-        const workspaces = await Workspace.findOne({
+        const workspace = await Workspace.findOne({
             _id: new mongoose.Types.ObjectId(workspaceId),
             ownerId: new mongoose.Types.ObjectId(userId)
         });
 
-        if (!workspaces) {
+        if (!workspace) {
             return NextResponse.json({
                 success: false,
                 message: "Workspace not found"
@@ -98,7 +97,7 @@ export async function GET(
 
         return NextResponse.json({
             success: true,
-            workspaces
+            workspace
         })
     } catch (error: unknown) {
         const message = error instanceof Error ? error.message : "Internal Server Error";

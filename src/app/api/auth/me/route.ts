@@ -16,7 +16,7 @@ export async function GET() {
         }
 
         // Verify JWT
-        const userId = await verifyToken(token)
+        const userId = await verifyToken(token);
         const user = await User.findById(userId).select("-password"); // Exclude password field
 
         if (!user) {
