@@ -26,7 +26,7 @@ export async function POST(req: NextRequest,
             })
         }
 
-        const validTypes = ["boolean", "percentage", "variant"];
+        const validTypes = ["boolean", "percentage"];
 
         if (!validTypes.includes(type)) {
             return NextResponse.json({
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest,
         }
 
 
-        const valid = validateVariations(type, variations)
+        validateVariations(type, variations)
 
         const key = generateFeatureKey(name)
         const newFlag = await FeatureFlag.create({

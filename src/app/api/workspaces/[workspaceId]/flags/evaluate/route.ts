@@ -31,7 +31,7 @@ export async function POST(req: NextRequest,
 
         const flags = await FeatureFlag.find({ workspaceId });
 
-        // console.log(flags)
+
         const result = {} as any
 
         flags.forEach((flag) => {
@@ -41,6 +41,7 @@ export async function POST(req: NextRequest,
             if (flag.type === "boolean") {
                 result[flag.key] = flag.enabled
             }
+
             // Percentage rollout flags
             else if (flag.type === "percentage") {
 
@@ -59,12 +60,14 @@ export async function POST(req: NextRequest,
                     }
                 }
 
-                result[flag.key] = selected
+                if (selected === true) {
+                    result[flag.key] = true
+                }
 
             }
         })
 
-        // console.log(result)
+
 
         return NextResponse.json({
             success: true,

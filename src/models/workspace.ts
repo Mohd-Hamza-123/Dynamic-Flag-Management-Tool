@@ -1,7 +1,5 @@
 import mongoose from "mongoose"
 
-// A Workspace is the top-level container of your system. It groups all feature flags, environments, and users under one logical unit.
-
 const WorkspaceSchema = new mongoose.Schema({
     name: {
         type: String,

@@ -15,8 +15,7 @@ export default function Home() {
 
       <Link
         href="/dashboard"
-        className="bg-blue-600 text-white px-6 py-3 rounded flex items-center gap-2 hover:bg-blue-700"
-      >
+        className="bg-blue-600 text-white px-6 py-3 rounded flex items-center gap-2 hover:bg-blue-700">
         Go to Dashboard <FiArrowRight />
       </Link>
     </div>
