@@ -13,7 +13,7 @@ const Dashboard = () => {
   const { loading, data, queryFn } = useQuery<WorkspaceListResponse | undefined>("/api/workspaces");
 
   return (
-    <main className="max-w-3xl mx-auto space-y-6 pb-6 pt-4">
+    <main className="max-w-3xl mx-auto space-y-6 pb-6 pt-4 px-2">
 
       <header className="flex justify-between items-center">
         <div>

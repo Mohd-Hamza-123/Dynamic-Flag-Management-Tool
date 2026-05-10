@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { ChevronLeft } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -20,7 +22,11 @@ const CreateFlagPage = () => {
         error && alert(error);
     }, [error]);
 
-    const createFlag = async (formdata: FormData) => {
+    const createFlag = async (e: React.SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const formdata = new FormData(e.currentTarget);
+
         const name = formdata.get("name") as string;
         const description = formdata.get("description") as string;
         const enabled = formdata.get("enabled") as string;
@@ -28,17 +34,17 @@ const CreateFlagPage = () => {
         if (!name?.trim()) return;
 
         const resp = await mutate({
-            path: `api/workspaces/${id}/flags`,
-            data: JSON.stringify({ name, description, enabled, type: "boolean" })
+            path: `/api/workspaces/${id}/flags`,
+            data: { name, description, enabled: !!(enabled === "on"), type: "boolean" }
         });
 
         if (resp.success) {
-            router.push(`workspaces/${id}`);
+            router.push(`/workspace/${id}`);
         }
     }
 
     return (
-        <main className="py-4 max-w-3xl mx-auto">
+        <main className="py-4 max-w-3xl mx-auto px-2">
             <OptionalChildren condition={loading}>
                 <FullPageSpinner />
             </OptionalChildren>
@@ -50,7 +56,7 @@ const CreateFlagPage = () => {
                     Create Feature Flag
                 </h2>
             </header>
-            <form className="space-y-4 mt-6" action={createFlag}>
+            <form className="space-y-4 mt-6" onSubmit={createFlag}>
                 <div className="space-y-2">
                     <Label className="pl-2">Name</Label>
                     <Input

@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         const body = await req.json();
         const { name, description } = body;
         const userId = req.headers.get("x-user-id")
-        // console.log(userId)
+        
         // basic validation
         if (!name) {
             return NextResponse.json(

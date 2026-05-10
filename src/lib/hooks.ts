@@ -26,15 +26,20 @@ export const useMutation = () => {
 
         try {
             const response = await fetch(path, {
-                body: data ? JSON.stringify(data) : data,
+                body: data ? JSON.stringify(data) : undefined,
                 method: mode,
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
 
+
             const result = await response.json();
-            return { success: true, result };
+
+            if (response.ok)
+                return { success: true, result };
+
+            else return { success: false, result };
 
         } catch (e: any) {
             setError(e.message);
@@ -49,8 +54,8 @@ export const useMutation = () => {
     return { loading, error, mutate };
 };
 
-export const useQuery = <T>(path: string) => {
-    const [loading, setLoading] = useState(true);
+export const useQuery = <T>(path: string, enable = true) => {
+    const [loading, setLoading] = useState(enable);
     const [error, setError] = useState('');
     const [data, setData] = useState<T>();
     const loadingRef = useRef(false);
@@ -76,8 +81,8 @@ export const useQuery = <T>(path: string) => {
     }
 
     useEffect(() => {
-        queryFn();
-    }, [])
+        if (enable) queryFn();
+    }, [enable])
 
 
     return { loading, error, data, queryFn };

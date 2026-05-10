@@ -23,8 +23,11 @@ export default function RegisterPage() {
     error && alert(error)
   }, [error]);
 
-  const handleRegister = async (formData: FormData) => {
+  const handleRegister = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
+    const formData = new FormData(e.currentTarget);
+    
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -66,7 +69,7 @@ export default function RegisterPage() {
           </CardHeader>
 
           <CardContent>
-            <form className="space-y-4 w-full" action={handleRegister}>
+            <form className="space-y-4 w-full" onSubmit={handleRegister}>
               <div className="space-y-2">
                 <Label>Name</Label>
                 <Input

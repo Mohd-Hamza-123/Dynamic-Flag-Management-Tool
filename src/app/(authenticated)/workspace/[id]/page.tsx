@@ -46,7 +46,7 @@ const WorkspacePage = () => {
     }
 
     return (
-        <main className="max-w-3xl pb-4 pt-2 mx-auto space-y-6">
+        <main className="max-w-3xl pb-4 pt-2 mx-auto space-y-6 px-2">
             <OptionalChildren condition={mutation.loading}>
                 <FullPageSpinner />
             </OptionalChildren>
@@ -68,8 +68,8 @@ const WorkspacePage = () => {
                         </DropdownMenu.Trigger>
 
                         <DropdownMenu.Portal>
-                            <DropdownMenu.Content className="DropdownMenuContent" sideOffset={5}>
-                                <DropdownMenu.Item onClick={handleDeleteWorkspace} className="DropdownMenuItem">
+                            <DropdownMenu.Content className="DropdownMenuContent p-2 border rounded-md border-gray-500/10 bg-gray-500/10" sideOffset={5}>
+                                <DropdownMenu.Item onClick={handleDeleteWorkspace} className="DropdownMenuItem flex gap-2 items-center cursor-pointer">
                                     <TrashIcon />
                                     <span>Delete Workspace</span>
                                 </DropdownMenu.Item>
@@ -90,7 +90,7 @@ const WorkspacePage = () => {
                     </div>
                     <div className="my-4 space-y-4">
                         <p>{data.workspace.description || "No description provided"}</p>
-                        <Link className="h-10 px-4 py-2 w-fit gap-2 flex flex-cntr-all rounded-md primary" href="/flag/create">
+                        <Link className="h-10 px-4 py-2 w-fit gap-2 flex flex-cntr-all rounded-md primary" href={`${id}/create`}>
                             <PlusIcon />
                             <span>Add Feature</span>
                         </Link>

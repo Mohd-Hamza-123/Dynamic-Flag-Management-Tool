@@ -10,11 +10,10 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Plus } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Textarea } from "./ui/Textarea";
-import { Form } from "radix-ui";
 import { useMutation } from "@/lib/hooks";
+import { Plus } from "lucide-react";
+import { useEffect } from "react";
+import { Textarea } from "./ui/Textarea";
 
 const AddWorkspaceButton = ({ refresh }: any) => {
 
@@ -24,7 +23,10 @@ const AddWorkspaceButton = ({ refresh }: any) => {
     error && alert(error);
   }, [error]);
 
-  const createWorkspace = async (formData: FormData) => {
+  const createWorkspace = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
     const name = formData.get("name") as string;
 
     const description = formData.get("description") as string;
@@ -33,11 +35,13 @@ const AddWorkspaceButton = ({ refresh }: any) => {
 
     const resp = await mutate({
       path: "/api/workspaces",
-      data: JSON.stringify({ name, description })
+      data: { name, description }
     });
 
     if (resp.success) {
       refresh();
+    } else {
+      alert((resp.result as Record<string, any> | null)?.message || "Something went wrong! Please try again.")
     }
 
   };
@@ -56,7 +60,7 @@ const AddWorkspaceButton = ({ refresh }: any) => {
           <DialogTitle>Create Workspace</DialogTitle>
         </DialogHeader>
 
-        <form action={createWorkspace} className="space-y-4 mt-4">
+        <form onSubmit={createWorkspace} className="space-y-4 mt-4">
           <Input
             placeholder="Name of your Workspace"
             name="name"

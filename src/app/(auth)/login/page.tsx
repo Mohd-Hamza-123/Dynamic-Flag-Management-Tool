@@ -23,7 +23,10 @@ export default function LoginPage() {
     error && alert(error)
   }, [error]);
 
-  const handleLogin = async (formData: FormData) => {
+  const handleLogin = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
 
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
@@ -65,7 +68,7 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent>
-            <form className="space-y-4" action={handleLogin}>
+            <form className="space-y-4" onSubmit={handleLogin}>
               <div className="space-y-2">
                 <Label>Email</Label>
                 <Input

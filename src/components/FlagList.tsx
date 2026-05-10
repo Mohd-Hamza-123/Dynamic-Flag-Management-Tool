@@ -7,7 +7,7 @@ import { Spinner } from "./ui/Spinner";
 
 export default function FlagList({ wsp_id }: { wsp_id: string }) {
 
-  const { loading, error, data, queryFn } = useQuery<ServerResponseType<{ flags: Flag[] }>>(`/api/workspaces/${wsp_id}`);
+  const { loading, error, data, queryFn } = useQuery<ServerResponseType<{ flags: Flag[] }>>(`/api/workspaces/${wsp_id}/flags`);
 
   if (loading) return (
     <section className="h-[25dvh] flex flex-cntr-all">
@@ -19,6 +19,13 @@ export default function FlagList({ wsp_id }: { wsp_id: string }) {
     <section className="p-4 space-y-2 bg-gray-500/20 border rounded-md border-gray-500/10">
       <h3 className="text-center">Uh Oh! Something went wrong</h3>
       <p className="ghost text-center">{error || data?.message || "Please refresh the page and try again"}</p>
+    </section>
+  )
+
+  else if (!data.flags || !data.flags.length) return (
+    <section className="p-4 space-y-2 bg-gray-500/20 border rounded-md border-gray-500/10">
+      <h3 className="text-center">So Empty!</h3>
+      <p className="ghost text-center">Start creating Feature Flags now</p>
     </section>
   )
 

@@ -1,5 +1,5 @@
 export const Spinner = () => (
-    <div className="size-5 border-4 border-zinc-100 rounded-full border-b-transparent animate-spin"></div>
+    <div className="size-10 border-4 border-zinc-100 rounded-full border-b-transparent animate-spin"></div>
 )
 
 export const FullPageSpinner = () => (
