@@ -47,8 +47,8 @@ const UserPage = () => {
                         <CircleUserRoundIcon className="size-12" />
                     </div>
                     <div>
-                        <h4 className="text-2xl">{data.name}</h4>
-                        <p className="text-sm">{data.email}</p>
+                        <h4 className="text-2xl">{data.user.name}</h4>
+                        <p className="text-sm">{data.user.email}</p>
                     </div>
                 </div>
                 <button
