@@ -43,14 +43,15 @@ export default function LoginPage() {
         data: form
       });
 
-      if (!response.success || !response.result || response.result.success) {
+      if (!response.success || !response.result || !response.result.success) {
         if (response.result?.message) {
           alert(response.result.message);
           return;
         }
       } else {
-        alert("Login successfully");
+        
         router.push("/dashboard");
+alert("Login successfully");
       }
     }
 
