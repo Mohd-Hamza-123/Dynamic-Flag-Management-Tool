@@ -85,7 +85,7 @@ const WorkspacePage = () => {
                         </div>
                         <div>
                             <h4 className="text-2xl">{data.workspace.name}</h4>
-                            <p className="text-sm">Environment: {data.workspace.environment}</p>
+                           
                         </div>
                     </div>
                     <div className="my-4 space-y-4">
