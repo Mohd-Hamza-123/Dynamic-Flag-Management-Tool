@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 const UserPage = () => {
 
-    const { loading, data, error } = useQuery<ServerResponseType<{ name: string, email: string }> | undefined>("/api/auth/me");
+    const { loading, data, error } = useQuery<ServerResponseType<{user: { name: string, email: string }}> | undefined>("/api/auth/me");
     const mutation = useMutation();
     const router = useRouter();
 
